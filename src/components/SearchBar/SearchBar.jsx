@@ -10,7 +10,7 @@ const SearchForm = ({ onSearch }) => {
     const form = evt.target;
 
     if (topic.trim() === "") {
-      toast.error("Please enter a search term!");
+      toast.error("Please enter a search word !");
       return;
     }
 
