@@ -21,12 +21,11 @@ const App = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(false);
         const data = await fetchArticlesWithTopic(query, page);
-        if (page === 1) {
-          setArticles(data);
-        } else {
-          setArticles((prevArticles) => [...prevArticles, ...data]);
-        }
+        setArticles((prevArticles) =>
+          page === 1 ? data : [...prevArticles, ...data]
+        );
       } catch (error) {
         setError(true);
       } finally {
@@ -34,19 +33,19 @@ const App = () => {
       }
     };
 
-    if (query !== "") {
+    if (query) {
       fetchData();
     }
   }, [query, page]);
 
-  const handleSearch = async (topic) => {
+  const handleSearch = (topic) => {
     setArticles([]);
     setError(false);
     setQuery(topic);
     setPage(1);
   };
 
-  const loadMore = async () => {
+  const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -63,12 +62,14 @@ const App = () => {
     <>
       <SearchForm onSearch={handleSearch} />
       {loading && <Loader />}
-      {error && <Error />}
-      {articles.length > 0 && (
-        <ImageGallery items={articles} onImageClick={openModal} />
+      {error && (
+        <Error message="Something went wrong. Please try again later." />
       )}
       {articles.length > 0 && (
-        <LoadMoreBtn onClick={loadMore} loading={loading} />
+        <>
+          <ImageGallery items={articles} onImageClick={openModal} />
+          <LoadMoreBtn onClick={loadMore} loading={loading} />
+        </>
       )}
       <ImageModal
         isOpen={modalIsOpen}

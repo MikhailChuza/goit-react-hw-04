@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-
+import PropTypes from "prop-types";
 
 const customStyles = {
   overlay: {
@@ -28,12 +28,15 @@ const ImageModal = ({ isOpen, onClose, imageUrl }) => {
       style={customStyles}
       contentLabel="Image Modal"
     >
-      <button onClick={onClose} className="close-btn">
-        &times;
-      </button>
       <img src={imageUrl} alt="Large" />
     </Modal>
   );
+};
+
+ImageModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  imageUrl: PropTypes.string.isRequired,
 };
 
 export default ImageModal;
